@@ -486,7 +486,7 @@ var TestComponent = /** @class */ (function () {
             return;
         }
         var config = this.config;
-        var indexes = Array.from({ length: config.getColumn(this.task().answerColumn).length - 1 }, function (_, i) { return i + 1; });
+        var indexes = Array.from({ length: config.getColumn(this.task().answerColumn).length - 2 }, function (_, i) { return i + 1; });
         var answers = this.answers;
         answers[0] = this.task().rowIndex;
         indexes.splice(indexes.indexOf(answers[0]), 1);
@@ -504,7 +504,7 @@ var TestComponent = /** @class */ (function () {
         elements.taskProgressLabel.innerHTML = this.taskIndex == this.tasks.length ? "-/-" : (this.taskIndex + 1) + "/" + this.tasks.length;
         elements.taskTextLabel.innerHTML = this.task().getText(config);
         for (var i = 0; i < answers.length; i++) {
-            elements.answerButtons[i].innerText = this.tasks[answers[i]].getText(config);
+            elements.answerButtons[i].innerText = config.get(this.task().answerColumn, answers[i]);
         }
         elements.taskTitleLabel.innerHTML = BUNDLE.format("task.title", config.get(this.task().questionColumn, 0), config.get(this.task().answerColumn, 0));
     };
