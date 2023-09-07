@@ -551,6 +551,11 @@ var TestComponent = /** @class */ (function () {
     return TestComponent;
 }());
 setTimeout(function () {
+    var isTouchDevice = function () {
+        return 'ontouchstart' in window || 'onmsgesturechange' in window;
+    };
+    // var isDesktop = window.screenX != 0 && !isTouchDevice();
+    document.getElementsByClassName("answer-buttons")[0]["dataset"]["desktop"] = (isTouchDevice() ? "0" : "1");
     var params = new Proxy(new URLSearchParams(window.location.search), {
         get: function (searchParams, prop) { return searchParams.get(prop.toString()); },
     });
