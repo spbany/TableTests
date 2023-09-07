@@ -1,0 +1,46 @@
+
+
+
+:root {
+    --font-size: 20px;
+    --background-color: #32472c;
+}
+
+* {
+    font-size: var(--font-size);
+}
+body {
+     background-color: var(--background-color);
+     margin: 0;
+ }
+
+.side-bar_button {
+    background-color: rgba(0, 0, 0, 1); /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    /*display: inline-block;*/
+    padding: 16px 32px;
+    width: 100%;
+    display: table-cell;
+    vertical-align: middle;
+    transition-duration: 0.4s;
+    /*font-size: 16px;*/
+    /*font-size: ;*/
+}
+
+.side-bar_button:hover {
+    background: gray;
+}
+
+.element__container {
+    overflow: hidden;
+    position: absolute;
+
+
+    display: inline-flex;
+    height: 100%;
+    width: 100%;
+    max-width: 100%;
+}
