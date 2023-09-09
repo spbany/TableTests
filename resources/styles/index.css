@@ -1,46 +1,70 @@
 
-
-
 :root {
-    --font-size: 20px;
+    --font-size: 25px;
     --background-color: #32472c;
 }
 
 * {
     font-size: var(--font-size);
 }
-body {
-     background-color: var(--background-color);
-     margin: 0;
- }
 
-.side-bar_button {
-    background-color: rgba(0, 0, 0, 1); /* Green */
-    border: none;
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    /*display: inline-block;*/
-    padding: 16px 32px;
-    width: 100%;
-    display: table-cell;
-    vertical-align: middle;
-    transition-duration: 0.4s;
-    /*font-size: 16px;*/
-    /*font-size: ;*/
-}
-
-.side-bar_button:hover {
-    background: gray;
-}
-
-.element__container {
-    overflow: hidden;
-    position: absolute;
-
-
-    display: inline-flex;
+html {
+    display: flex;
     height: 100%;
     width: 100%;
-    max-width: 100%;
+}
+
+body {
+    flex-grow: 1;
+    background-color: var(--background-color);
+    margin: 10px;
+}
+
+.label-cont {
+    display: flex;
+    width: fit-content;
+    height: min-content;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.main-div {
+    /*display: table-cell;*/
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.answer-buttons-container {
+    display: grid;
+    margin: auto;
+    align-items: center;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.copyright-clazz {
+    text-align: left;
+    bottom: 0;
+    font-size: 10px;
+    position: absolute;
+}
+
+.extra_button_container {
+    /*max-width: 1536px;*/
+    /*flex-grow: 1;*/
+    /*display: flex;*/
+    flex-direction: row-reverse;
+}
+
+.extra_button_container_container {
+    /*flex-grow: 1;*/
+    /*display: flex;*/
+    width: 100%;
+    max-width: 1536px;
+    height: min-content;
+    /*position: absolute;*/
+    align-items: center;
+    bottom: 10px;
+    margin: auto;
 }

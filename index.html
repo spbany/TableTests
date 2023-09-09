@@ -2,44 +2,39 @@
 <html lang="en">
 <head>
     <!--    <link rel="stylesheet" type="text/css" href="/index.css"/>-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"
-            integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <meta charset="UTF-8">
     <title>Title</title>
     <!--region common-->
-<!--    <script src="js/src/index-utils.js"></script>-->
+    <!--    <script src="js/src/index-utils.js"></script>-->
     <bundle lang="ru" href="resources/bundles/bundle_ru.properties"></bundle>
     <bundle lang="en" href="resources/bundles/bundle.properties"></bundle>
     <script defer src="main.js"></script>
     <link rel="stylesheet" href="resources/styles/answer.css">
     <link rel="stylesheet" type="text/css" href="resources/styles/index.css">
-    <link rel="stylesheet" type="text/css" href="resources/styles/popup.css">
-    <!--<script defer src="js/src/index-ui.js"></script>
-    <script src="js/src/parsers/parsers.js"></script>
-    <script src="js/src/settings/settings.js"></script>
-    &lt;!&ndash;endregion&ndash;&gt;
-    <script defer src="js/src/custom/custom-buttons.js"></script>
-    <script defer src="js/src/classes.js"></script>
-    <script defer src="js/src/index.js"></script>-->
-    <!--    <script type="text/javascript" src="typescript.min.js"></script>-->
-    <!--    <script type="text/javascript" src="typescript.compile.min.js"></script>-->
 </head>
 <body>
-<p class="task-progress-label">-/-</p>
-<div>
-    <div><p class="task-title-label">Task</p></div>
-    <div><p class="task-text-label">Text</p></div>
-    <div>
-        <div class="answer-buttons">
-            <button class="answer-button" id="answer-button-0">0</button>
-            <button class="answer-button" id="answer-button-1">1</button>
-            <button class="answer-button" id="answer-button-2">2</button>
-            <button class="answer-button" id="answer-button-3">3</button>
-            <button class="answer-button" id="answer-button-4">4</button>
+    <p class="task-progress-label">-/-</p>
+    <div class="main-div">
+        <div class="label-cont" style="height: 25%"></div>
+        <div class="label-cont"><p class="task-title-label">Task</p></div>
+        <div class="label-cont"><p class="task-text-label">Text</p></div>
+        <div class="answer-buttons-container">
+            <div class="answer-buttons">
+                <button class="answer-button" id="answer-button-0">0</button>
+                <button class="answer-button" id="answer-button-1">1</button>
+                <button class="answer-button" id="answer-button-2">2</button>
+                <button class="answer-button" id="answer-button-3">3</button>
+                <button class="answer-button" id="answer-button-4">4</button>
+            </div>
         </div>
     </div>
-</div>
-<p style="text-align: left;bottom: 0;font-size: 10px;position: absolute">©TODO, 2023</p>
+    <p class="copyright-clazz">©TODO, 2023</p>
+    <div class="extra_button_container_container">
+        <button class="extra_button" hidden>Перезапустить тест
+        </button>
+        <!--        <div class="extra_button_container">-->
+        <!--        </div>-->
+    </div>
 </body>
 </html>

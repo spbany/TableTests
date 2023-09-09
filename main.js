@@ -253,7 +253,7 @@ var BUNDLE = (function () {
 })();
 var SETTINGS = (function () {
     var settings = {
-        fontSize: settingKey(20, function (newvalue) {
+        fontSize: settingKey(25, function (newvalue) {
             var style = document.documentElement.style;
             if (newvalue == null) {
                 style["--font-size"] = "";
@@ -346,6 +346,7 @@ var Elements = /** @class */ (function () {
             registerButton(3),
             registerButton(4)
         ];
+        this.extraButton = document.getElementsByClassName("extra_button")[0];
     }
     return Elements;
 }());
@@ -424,6 +425,12 @@ var TestComponent = /** @class */ (function () {
     function TestComponent(config) {
         var _this = this;
         this.answers = Array.from({ length: 5 }, function (_, i) { return i; });
+        var extraClickCallback = undefined;
+        elements.extraButton.addEventListener("click", function () {
+            if (extraClickCallback) {
+                extraClickCallback();
+            }
+        });
         this.config = config;
         this.taskIndex = 0;
         this.tasks = [];
@@ -445,26 +452,47 @@ var TestComponent = /** @class */ (function () {
         this.setTaskIndex(0);
         var self = this;
         var _loop_3 = function (i) {
-            var answerButton = elements.answerButtons[i];
-            answerButton.addEventListener("click", function (e) {
-                if (_this.answers[i] == _this.task().rowIndex) {
+            var myAnswerButton = elements.answerButtons[i];
+            myAnswerButton.addEventListener("click", function (e) {
+                var correctButtonIdx = _this.answers.indexOf(_this.task().rowIndex);
+                if (extraClickCallback)
+                    return;
+                if (i == correctButtonIdx) {
                     self.buttonAnimation(animationList[i], 0, function () {
                         self.setTaskIndex(self.taskIndex + 1);
                     });
                 }
                 else {
-                    answerButton.style.borderColor = "#ff0000";
+                    // myAnswerButton.style.borderColor =
+                    var correctButton_1 = elements.answerButtons[correctButtonIdx];
+                    // correctButton.style.borderColor =
                     anime({
-                        targets: answerButton,
-                        borderColor: "#454545",
-                        duration: 250,
+                        targets: [myAnswerButton, correctButton_1],
+                        duration: 100,
                         easing: "linear",
+                        borderColor: function (_, idx, i) {
+                            return idx == 0 ? "#f55050" : "#8eef70";
+                        },
                         complete: function () {
-                            self.buttonAnimation(animationList[i], 0, function () {
-                                shuffle(self.tasks);
-                                self.setTaskIndex(0);
-                                answerButton.style.borderColor = null;
-                            });
+                            var attributeNode = elements.extraButton.getAttributeNode("hidden");
+                            elements.extraButton.attributes.removeNamedItem(attributeNode.name);
+                            extraClickCallback = function () {
+                                elements.extraButton.attributes.setNamedItem(attributeNode);
+                                extraClickCallback = undefined;
+                                anime({
+                                    targets: [myAnswerButton, correctButton_1],
+                                    borderColor: "#454545",
+                                    duration: 250,
+                                    easing: "linear",
+                                    complete: function () {
+                                        self.buttonAnimation(animationList[i], 0, function () {
+                                            shuffle(self.tasks);
+                                            self.setTaskIndex(0);
+                                            // myAnswerButton.style.borderColor = null
+                                        });
+                                    }
+                                });
+                            };
                         }
                     });
                 }
@@ -485,11 +513,20 @@ var TestComponent = /** @class */ (function () {
             this.setTaskIndex(0);
             return;
         }
+        for (var _i = 0, _a = elements.answerButtons; _i < _a.length; _i++) {
+            var answerButton = _a[_i];
+            answerButton.style.borderColor = null;
+        }
         var config = this.config;
-        var indexes = Array.from({ length: config.getColumn(this.task().answerColumn).length - 2 }, function (_, i) { return i + 1; });
+        var task = this.task();
+        var indexes = Array.from({ length: config.getColumn(task.answerColumn).length - 2 }, function (_, i) {
+            var number = i + 1;
+            if (number >= task.rowIndex)
+                number++;
+            return number;
+        });
         var answers = this.answers;
-        answers[0] = this.task().rowIndex;
-        indexes.splice(indexes.indexOf(answers[0]), 1);
+        answers[0] = task.rowIndex;
         for (var i = 1; i < answers.length; i++) {
             var randomIndex = Math.floor(Math.random() * indexes.length);
             answers[i] = indexes[randomIndex];
@@ -502,49 +539,48 @@ var TestComponent = /** @class */ (function () {
             answers[ii] = temp;
         }
         elements.taskProgressLabel.innerHTML = this.taskIndex == this.tasks.length ? "-/-" : (this.taskIndex + 1) + "/" + this.tasks.length;
-        elements.taskTextLabel.innerHTML = this.task().getText(config);
+        elements.taskTextLabel.innerHTML = task.getText(config);
         for (var i = 0; i < answers.length; i++) {
-            elements.answerButtons[i].innerText = config.get(this.task().answerColumn, answers[i]);
+            elements.answerButtons[i].innerText = config.get(task.answerColumn, answers[i]);
         }
-        elements.taskTitleLabel.innerHTML = BUNDLE.format("task.title", config.get(this.task().questionColumn, 0), config.get(this.task().answerColumn, 0));
+        elements.taskTitleLabel.innerHTML = BUNDLE.format("task.title", config.get(task.questionColumn, 0), config.get(task.answerColumn, 0));
     };
     TestComponent.prototype.buttonAnimation = function (frames, idx, callback) {
         if (idx === void 0) { idx = 0; }
         if (idx >= frames.length) {
-            callback();
+            if (typeof callback == "function")
+                callback();
+            this.buttonAnimation(frames, 0, "negative-way");
+            return;
+        }
+        else if (-idx >= frames.length) {
             for (var _i = 0, _a = elements.answerButtons; _i < _a.length; _i++) {
                 var answerButton = _a[_i];
                 answerButton["disabled"] = false;
             }
-            anime({
-                targets: elements.answerButtons,
-                opacity: 1,
-                easing: "linear",
-                duration: 250,
-                complete: function () {
-                }
-            });
             return;
         }
-        if (idx == 0) {
+        if (idx == 0 && callback != "negative-way") {
             for (var _b = 0, _c = elements.answerButtons; _b < _c.length; _b++) {
                 var answerButton = _c[_b];
                 answerButton["disabled"] = true;
             }
         }
         var targets = [];
-        for (var _d = 0, _e = frames[idx]; _d < _e.length; _d++) {
+        for (var _d = 0, _e = frames[Math.max(idx, -idx)]; _d < _e.length; _d++) {
             var number = _e[_d];
             targets.push(elements.answerButtons[number]);
         }
+        var deltaIdx = callback == "negative-way" ? -1 : 1;
+        var transform = deltaIdx > 0 ? [1, 0] : [0, 1];
         var self = this;
         anime({
             targets: targets,
             duration: 250,
-            opacity: [1, 0],
+            opacity: transform,
             easing: "linear",
             complete: function (AnimInstance) {
-                self.buttonAnimation(frames, idx + 1, callback);
+                self.buttonAnimation(frames, idx + deltaIdx, callback);
             }
         });
     };
